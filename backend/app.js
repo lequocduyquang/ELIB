@@ -18,4 +18,20 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
+app.get('/about', (req, res) => {
+    res.render('about')
+})
+
+app.get('/faq', (req, res) => {
+    res.render('faq')
+})
+
+app.get('/privacy', (req, res) => {
+    res.render('privacy')
+})
+
+app.get('/terms', (req, res) => {
+    res.render('terms')
+})
+
 app.listen(PORT, () => console.log('App running on port 3000'))
