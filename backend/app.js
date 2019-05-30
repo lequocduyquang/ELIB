@@ -34,6 +34,10 @@ app.get('/privacy', (req, res) => {
     res.render('privacy')
 })
 
+app.get('/login', (req, res) => {
+    res.render('login')
+})
+
 app.get('/terms', (req, res) => {
     res.render('terms')
 })
