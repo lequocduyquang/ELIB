@@ -2,21 +2,30 @@ const express = require('express')
 const cors = require('cors')
 const path = require('path')
 const exphbs = require('express-handlebars')
+const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
 const errorHandler = require('./middleware/errorHandler')
 const bookRoutes = require('./routes/book')
 const app = express()
 
+app.use(cors())
+mongoose.Promise = global.Promise
+mongoose.connect('mongodb://localhost/bookstore', {
+    useNewUrlParser: true
+}).then(() => console.log('Connected MongoDB'))
+    .catch(err => console.log(err))
+
 app.engine('handlebars', exphbs())
 app.set('view engine', 'handlebars')
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
-app.use(cors())
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 const PORT = 3000
+
 
 app.get('/', (req, res) => {
     res.render('home')
