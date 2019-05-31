@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 
 const errorHandler = require('./middleware/errorHandler')
 const bookRoutes = require('./routes/book')
+const adminRoutes=require('./routes/admin');
 const app = express()
 
 app.use(cors())
@@ -43,11 +44,17 @@ app.get('/privacy', (req, res) => {
     res.render('privacy')
 })
 
+app.get('/login', (req, res) => {
+    res.render('login')
+})
+
 app.get('/terms', (req, res) => {
     res.render('terms')
 })
 
 app.use('/book', bookRoutes)
+
+app.use('/admin', adminRoutes);
 
 app.use(errorHandler)
 
