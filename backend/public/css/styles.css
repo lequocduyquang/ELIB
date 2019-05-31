@@ -539,7 +539,7 @@ header .cart {
     background: #cdcdcd;
     border-radius: 50%;
     margin: 0 5px;
-    trnsition: all 0.3s; }
+    transition: all 0.3s; }
     .testimonial-sec button.owl-dot.active {
       background: #ff9700;
       transform: scale(1.6); }

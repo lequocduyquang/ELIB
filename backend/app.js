@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 
 const errorHandler = require('./middleware/errorHandler')
 const bookRoutes = require('./routes/book')
+const adminRoutes=require('./routes/admin');
 const app = express()
 
 app.engine('handlebars', exphbs())
@@ -43,6 +44,8 @@ app.get('/terms', (req, res) => {
 })
 
 app.use('/book', bookRoutes)
+
+app.use('/admin', adminRoutes);
 
 app.use(errorHandler)
 
