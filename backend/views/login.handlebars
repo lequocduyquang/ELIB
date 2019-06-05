@@ -4,6 +4,12 @@
             <div class="col-12 col-lg-6">
                 <div class="login-content bg-white p-30 box-shadow">
                     <!-- Section Title -->
+
+                    {{#each errors}}
+                    <div class="alert alert-danger" style="text-align: center;">
+                        {{ msg }}
+                    </div>
+                    {{/each}}
                     <div style="margin-bottom: 20px" class="section-heading">
                         <h5>Login</h5>
                     </div>

@@ -4,11 +4,17 @@ const path = require('path')
 const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const flash = require('connect-flash')
 const bodyParser = require('body-parser')
+const session = require('express-session')
+const passport = require('passport')
 
 const userRoutes = require('./routes/user')
-const adminRoutes=require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 const app = express()
+
+// Passport Config
+require('./middleware/userPassport')(passport);
 
 app.use(cors())
 app.use(morgan('dev'))
@@ -21,13 +27,36 @@ mongoose.connect('mongodb://localhost/bookstore', {
 app.engine('handlebars', exphbs())
 app.set('view engine', 'handlebars')
 
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use(express.static(path.join(__dirname, 'public')))
 
 const PORT = 3000
 
+// Express session
+app.use(
+    session({
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: true
+    })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Connect flash
+app.use(flash());
+
+// Global variables
+app.use(function (req, res, next) {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    next();
+});
 
 app.use('/', userRoutes)
 
