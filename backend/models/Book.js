@@ -11,7 +11,7 @@ const BookSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Category'
     },
-    status: { type: Boolean, required: true }
+    status: { type: Boolean }
 })
 
 module.exports = mongoose.model('Book', BookSchema)

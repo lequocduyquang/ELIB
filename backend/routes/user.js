@@ -1,11 +1,20 @@
 const express = require('express')
 const User = require('./../models/User')
+const Book = require('../models/Book')
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
 const router = express.Router()
 
 router.get('/', (req, res) => {
-    res.render('home')
+    Book.find({}, (err, allbooks) => {
+        if(err) {
+            console.log(err)
+        } else {
+            res.render('home', {
+                books: allbooks
+            })    
+        }
+    })
 })
 
 router.get('/about', (req, res) => {

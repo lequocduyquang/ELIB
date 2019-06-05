@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ELIB
 > Ứng dụng Thư viện điện tử
 
@@ -43,11 +42,3 @@ Distributed under the Minimum license. See ``LICENSE`` for more information.
 [npm-url]: https://npmjs.org/package/datadog-metrics
 [travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
-=======
-﻿# ELIB
-School project Book Library with NodeJS + ExpressJS + MongoDB
-
-### Danh sách sinh viên
-* Lê Quốc Duy Quang 1612539
-* Lê Phạm Hoàng Quý 1612545
->>>>>>> 6b0f66bd4424253666f56001d56975db1ac52a98

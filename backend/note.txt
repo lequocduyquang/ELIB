@@ -1,0 +1,5 @@
+RESTFUL ROUTES
+
+INDEX       /              GET     Display a list of all books
+NEW         /posts/borrow  GET     Display form to borrow books 
+CREATE      /posts         POST    Add books 
