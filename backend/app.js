@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
 const flash = require('connect-flash')
+var hbs_sections = require('express-handlebars-sections')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
@@ -24,7 +25,11 @@ mongoose.connect('mongodb://localhost/bookstore', {
 }).then(() => console.log('Connected MongoDB'))
     .catch(err => console.log(err))
 
-app.engine('handlebars', exphbs())
+app.engine('handlebars', exphbs({
+    helpers: {
+        section: hbs_sections()
+    }
+}))
 app.set('view engine', 'handlebars')
 
 app.use(bodyParser.urlencoded({ extended: true }))
