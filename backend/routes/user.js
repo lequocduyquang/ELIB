@@ -6,14 +6,23 @@ const passport = require('passport')
 const router = express.Router()
 
 router.get('/', (req, res) => {
-    Book.find({}, (err, allbooks) => {
-        if(err) {
-            console.log(err)
-        } else {
-            res.render('home', {
-                books: allbooks
-            })    
-        }
+    // Book.find({}, (err, allbooks) => {
+    //     if(err) {
+    //         console.log(err)
+    //     } else {
+    //         res.render('home', {
+    //             books: allbooks
+    //         })    
+    //     }
+    // })
+    Book.listbook()
+    .then(allbooks=>{
+        res.render('home', {
+            books: allbooks
+        })    
+    })
+    .catch(err=>{
+        console.log(err);
     })
 })
 

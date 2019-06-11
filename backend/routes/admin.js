@@ -68,4 +68,8 @@ router.get('/listbook', (req, res, next) => {
 
 })
 
+router.get('/:id',(req,res,next)=>{
+    
+})
+
 module.exports = router;

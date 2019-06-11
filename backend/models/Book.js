@@ -45,5 +45,17 @@ module.exports = {
                 else resolve(res)
             })
         })
+    },
+
+    
+
+    singlebyID: ID => {
+        return new Promise((resolve, reject) => {
+            var book = mongoose.model('Book');
+            book.findById(ID, (err, res) => {
+                if (err) reject(err)
+                else resolve(res);
+            })
+        })
     }
 }
