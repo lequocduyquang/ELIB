@@ -40,17 +40,18 @@
                             {{this.title}}
                         </td>
                         <td>
-                           {{this.author}}
+                            {{this.author}}
                         </td>
                         <td>
-                           {{this.isbn}}
+                            {{this.isbn}}
                         </td>
                         <td>
-                           {{this.description}}
+                            {{this.description}}
                         </td>
                         <td>
-                            <a class="icon" href="#"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
-                            <a class="icon" href="#"
+                            <a class="icon" href="/admin/{{this._id}}"><i class="fa fa-pencil fa-lg"
+                                    aria-hidden="true"></i></a>
+                            <a class="icon" href="/admin/delete/{{this._id}}"
                                 onclick="return confirm('Are you sure to delete this record ?');"><i
                                     class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
                         </td>

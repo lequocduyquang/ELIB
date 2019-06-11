@@ -22,43 +22,35 @@
 </script>
 {{/section}}
 <div style="margin-bottom: 20px; margin-top:20px">
-    <h3>Add new Book</h3>
+    <h3>{{viewTitle}}</h3>
 </div>
 
 <div class="card">
     <div class="card-header card-header-primary">
-        <h4 class="card-title">Add new book</h4>
+        <h4 class="card-title">{{viewTitle}}</h4>
     </div>
     <div class="card-body">
-        <form action="" method="POST">
+        <form action="{{action}}" method="POST">
             <div class="form-group">
                 <label for="Title">Title</label>
-                <input type="text" class="form-control" name="title" id="Title">
+                <input type="text" class="form-control" name="title" id="Title" value="{{list.title}}">
                 <label for="Author">Author</label>
-                <input type="text" class="form-control" name="author" id="Author">
-                <label for="Publisher">Publisher</label>
-                <input type="text" class="form-control" name="publisher" id="Publisher">
+                <input type="text" class="form-control" name="author" id="Author" value="{{list.author}}">
                 <label for="ISBN">ISBN</label>
-                <input name="isbn" type="number" class="form-control" id="ISBN" placeholder="0-306-40615-2">
-            </div>
-            <div class="form-group">
+                <input name="isbn" type="number" class="form-control" id="ISBN" placeholder="0-306-40615-2"
+                    value="{{list.isbn}}">
                 <label for="Type">Type or Genre</label>
-                <select name="type" class="form-control" id="Type">
-                    <option>Children's</option>
-                    <option>Travel</option>
-                    <option>Short story</option>
-                    <option>Novel</option>
-                    <option>Art</option>
-                    <option>Action and adventure</option>
-                </select>
+                <input name="type" type="text" class="form-control" id="Type" placeholder="Novel"
+                    value="{{list.category}}">
             </div>
+
             <div class="custom-file">
                 <input name="image" type="file" class="custom-file-input" id="fuMain" multiple="multiple">
                 <label class="custom-file-label" for="fuMain">Choose file</label>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Description</label>
-                <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3">{{list.description}}</textarea>
             </div>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>

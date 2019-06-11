@@ -47,12 +47,30 @@ module.exports = {
         })
     },
 
-    
-
     singlebyID: ID => {
         return new Promise((resolve, reject) => {
             var book = mongoose.model('Book');
             book.findById(ID, (err, res) => {
+                if (err) reject(err)
+                else resolve(res);
+            })
+        })
+    },
+
+    editbook: (entity, ID) => {
+        return new Promise((resolve, reject) => {
+            var book = mongoose.model('Book');
+            book.findOneAndUpdate({ _id: ID }, entity, { new: true }, (err, res) => {
+                if (err) reject(err)
+                else resolve(res)
+            })
+        })
+    },
+
+    deletebook: (ID) => {
+        return new Promise((resolve, reject) => {
+            var book = mongoose.model('Book');
+            book.findByIdAndRemove(ID, (err, res) => {
                 if (err) reject(err)
                 else resolve(res);
             })
