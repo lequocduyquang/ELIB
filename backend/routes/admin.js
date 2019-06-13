@@ -2,6 +2,7 @@ const express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
 var bookModel = require('../models/Book');
+var userModel = require('../models/User');
 var id_temp = null;
 
 router.get('/', (req, res) => {
@@ -51,6 +52,25 @@ router.get('/profile', (req, res, next) => {
         title: 'User Profile',
         isActiveProfile: true
     })
+})
+
+router.get('/listuser', (req, res) => {
+    userModel.find((err, docs) => {
+        if (err)
+            res.json(err + '');
+        else {
+            res.render('layouts/admin/admin',
+                {
+                    layout: false,
+                    listuser: true,
+                    title: 'List User',
+                    isActiveListUser: true,
+                    list: docs
+                })
+
+        }
+    })
+
 })
 
 router.get('/listbook', (req, res, next) => {
@@ -116,5 +136,15 @@ router.get('/delete/:id', (req, res, next) => {
             res.json(err + '');
         })
 })
+
+router.get('/listuser/delete/:id', (req, res, next) => {
+    userModel.findByIdAndRemove(req.params.id).exec((err, docs) => {
+        if (err) res.json(err + '');
+        else {
+            res.redirect('/admin/listuser');
+        }
+    })
+})
+
 
 module.exports = router;
