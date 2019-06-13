@@ -30,7 +30,7 @@
         <h4 class="card-title">{{viewTitle}}</h4>
     </div>
     <div class="card-body">
-        <form action="{{action}}" method="POST">
+        <form action="{{action}}" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="Title">Title</label>
                 <input type="text" class="form-control" name="title" id="Title" value="{{list.title}}">
@@ -50,7 +50,8 @@
             </div>
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Description</label>
-                <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3">{{list.description}}</textarea>
+                <textarea name="description" class="form-control" id="exampleFormControlTextarea1"
+                    rows="3">{{list.description}}</textarea>
             </div>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>

@@ -3,7 +3,19 @@ var router = express.Router();
 const mongoose = require('mongoose');
 var bookModel = require('../models/Book');
 var userModel = require('../models/User');
+var multer = require('multer');
 var id_temp = null;
+
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public/images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+});
+
+var upload = multer({ storage: storage });
 
 router.get('/', (req, res) => {
     res.render('layouts/admin/admin', {
@@ -24,12 +36,15 @@ router.get('/addnewbook', (req, res) => {
     })
 });
 
-router.post('/addnewbook', (req, res) => {
+router.post('/addnewbook', upload.single('image'), (req, res) => {
+    var path=req.file.path;
+    path=path.slice(7,path.length);
+   
     var entity = {
         title: req.body.title,
         author: req.body.author,
         isbn: req.body.isbn,
-        image: req.body.image,
+        image: path,
         category: req.body.type,
         description: req.body.description,
         status: true
