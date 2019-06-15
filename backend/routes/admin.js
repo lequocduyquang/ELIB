@@ -3,6 +3,7 @@ var router = express.Router();
 const mongoose = require('mongoose');
 var bookModel = require('../models/Book');
 var userModel = require('../models/User');
+var categoryModel = require('../models/Category');
 var multer = require('multer');
 var id_temp = null;
 
@@ -27,6 +28,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/addnewbook', (req, res) => {
+    bookModel
+        .listbook()
     res.render('layouts/admin/admin', {
         viewTitle: 'Add new book',
         layout: false,
@@ -35,6 +38,16 @@ router.get('/addnewbook', (req, res) => {
         action: '/admin/addnewbook'
     })
 });
+
+router.get('/addnewcategory', (req, res) => {
+    res.render('layouts/admin/admin', {
+        viewTitle: 'Add new category',
+        layout: false,
+        addnewcategory: true,
+        isActiveAdd: true,
+        action: '/admin/addnewcategory'
+    })
+})
 
 router.post('/addnewbook', upload.single('image'), (req, res) => {
     var path=req.file.path;
@@ -58,6 +71,19 @@ router.post('/addnewbook', upload.single('image'), (req, res) => {
         })
 
 });
+
+router.post('/addnewcategory', (req, res) => {
+    var entity = {
+        name: req.body.name
+    }
+    categoryModel.add(entity)
+        .then(rows => {
+            res.redirect('/admin/addnewcategory')
+        })
+        .catch(err => {
+            res.json(err + '')
+        })
+})
 
 
 router.get('/profile', (req, res, next) => {

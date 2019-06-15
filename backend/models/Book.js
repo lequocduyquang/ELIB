@@ -8,9 +8,8 @@ const BookSchema = new Schema({
     image: String,
     description: String,
     category: {
-        // type: Schema.Types.ObjectId,
-        // ref: 'Category'
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'Category'
     },
     status: { type: Boolean }
 })
@@ -40,10 +39,13 @@ module.exports = {
     listbook: () => {
         return new Promise((resolve, reject) => {
             var book = mongoose.model('Book');
-            book.find((err, res) => {
-                if (err) reject(err)
-                else resolve(res)
-            })
+            book
+                .find({})
+                .populate('category')
+                .then((err, res) => {
+                    if (err) reject(err)
+                    else resolve(res)
+                })
         })
     },
 

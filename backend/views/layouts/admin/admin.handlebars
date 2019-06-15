@@ -30,8 +30,8 @@
             <div class="sidebar" data-color="purple" data-background-color="white"
                 data-image="../assets/img/sidebar-1.jpg">
                 <div class="logo">
-                    <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-                        Creative Tim
+                    <a href="http://www.google.com" class="simple-text logo-normal">
+                        ELIB
                     </a>
                 </div>
                 <div class="sidebar-wrapper">
@@ -39,43 +39,31 @@
                         <li class="nav-item {{#if isActiveProfile}}active{{/if}}">
                             <a class="nav-link" href="/admin/profile">
                                 <i class="material-icons">person</i>
-                                <p>User Profile</p>
+                                <p>Thông tin cá nhân</p>
                             </a>
                         </li>
                         <li class="nav-item {{#if isActiveAdd}}active{{/if}}">
                             <a class="nav-link" href="/admin/addnewbook">
                                 <i class="material-icons">content_paste</i>
-                                <p>Add new book</p>
+                                <p>Quản lý sách</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{#if isActiveAdd}}active{{/if}}">
+                            <a class="nav-link" href="/admin/addnewcategory">
+                                <i class="material-icons">category</i>
+                                <p>Quản lý category</p>
                             </a>
                         </li>
                         <li class="nav-item {{#if isActiveList}}active{{/if}} ">
                             <a class="nav-link" href="/admin/listbook">
                                 <i class="material-icons">library_books</i>
-                                <p>List book</p>
+                                <p>Danh sách sách</p>
                             </a>
                         </li>
                         <li class="nav-item {{#if isActiveListUser}}active{{/if}}">
                             <a class="nav-link" href="/admin/listuser">
                                 <i class="material-icons">supervisor_account</i>
-                                <p>List User</p>
-                            </a>
-                        </li>
-                        <li class="nav-item {{#if isActive}}active{{/if}}">
-                            <a class="nav-link" href="./notifications.html">
-                                <i class="material-icons">notifications</i>
-                                <p>Notifications</p>
-                            </a>
-                        </li>
-                        <li class="nav-item {{#if isActive}}active{{/if}}">
-                            <a class="nav-link" href="./rtl.html">
-                                <i class="material-icons">language</i>
-                                <p>RTL Support</p>
-                            </a>
-                        </li>
-                        <li class="nav-item active-pro ">
-                            <a class="nav-link" href="./upgrade.html">
-                                <i class="material-icons">unarchive</i>
-                                <p>Upgrade to PRO</p>
+                                <p>Danh sách người dùng</p>
                             </a>
                         </li>
                     </ul>
@@ -161,6 +149,10 @@
             <div class="row">
                 {{#if addnewbook}}
                 {{> addnewbook}}
+                {{/if}}
+
+                {{#if addnewcategory}}
+                {{> addnewcategory}}
                 {{/if}}
 
                 {{#if profile}}
