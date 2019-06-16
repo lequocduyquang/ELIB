@@ -115,20 +115,20 @@ router.get('/listuser', (req, res) => {
 })
 
 router.get('/listbook', (req, res, next) => {
-    bookModel.listbook()
-        .then(docs => {
-            res.render('layouts/admin/admin', {
-                layout: false,
-                listbook: true,
-                title: 'Table',
-                isActiveList: true,
-                list: docs
-            })
-        })
-        .catch(err => {
+    bookModel.find((err, docs) => {
+        if (err)
             res.json(err + '');
-        })
-
+        else {
+            res.render('layouts/admin/admin',
+                {
+                    layout: false,
+                    listuser: true,
+                    title: 'List Book',
+                    isActiveList: true,
+                    list: docs
+                })
+        }
+    })
 })
 
 router.get('/:id', (req, res, next) => {

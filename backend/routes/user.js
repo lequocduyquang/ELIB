@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
     // })
     Book.listbook()
     .then(allbooks=>{
+    
         res.render('home', {
             books: allbooks
         })    

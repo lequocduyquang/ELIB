@@ -38,15 +38,26 @@ module.exports = {
 
     listbook: () => {
         return new Promise((resolve, reject) => {
-            var book = mongoose.model('Book');
+            // var book = mongoose.model('Book');
             book
                 .find({})
-                .populate('category')
+                // .populate('category')
                 .then((err, res) => {
+                    console.log('List books: ', res)
                     if (err) reject(err)
                     else resolve(res)
                 })
         })
+        // book.find({})
+        //     .then((err, books) => {
+        //         if(err) console.log(err)
+                
+        //     })
+        // book.find({})
+        //     .then((err, books) => {
+        //         if(err) console.log(err)
+        //         return books
+        //     })
     },
 
     singlebyID: ID => {
