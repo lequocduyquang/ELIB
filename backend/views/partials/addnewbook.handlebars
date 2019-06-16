@@ -40,10 +40,10 @@
                 <input name="isbn" type="number" class="form-control" id="ISBN" placeholder="0-306-40615-2"
                     value="{{list.isbn}}">
                 <label for="category">Type or Genre</label>
-                <select name="category" id="category">
-                    {{#each categories}}
-                        <option value="{{id}}">{{ name }}</option>
-                    {{/each}}
+                <select class="form-control" id="category" name="category">
+                    {{#each listcategory}}
+                        <option>{{this.name}}</option>
+                    {{/each}}   
                 </select>
             </div>
 

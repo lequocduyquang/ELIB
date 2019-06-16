@@ -3,6 +3,7 @@ var router = express.Router();
 const mongoose = require('mongoose');
 var bookModel = require('../models/Book');
 var userModel = require('../models/User');
+
 var categoryModel = require('../models/Category');
 var multer = require('multer');
 var id_temp = null;
@@ -28,15 +29,21 @@ router.get('/', (req, res) => {
 });
 
 router.get('/addnewbook', (req, res) => {
-    bookModel
-        .listbook()
-    res.render('layouts/admin/admin', {
-        viewTitle: 'Add new book',
-        layout: false,
-        addnewbook: true,
-        isActiveAdd: true,
-        action: '/admin/addnewbook'
-    })
+    var Listcategory;
+    categoryModel.listcategory()
+        .then(rows => {
+            Listcategory = rows;
+            bookModel
+                .listbook()
+            res.render('layouts/admin/admin', {
+                viewTitle: 'Add new book',
+                layout: false,
+                addnewbook: true,
+                isActiveAdd: true,
+                listcategory: Listcategory,
+                action: '/admin/addnewbook',
+            })
+        })
 });
 
 router.get('/addnewcategory', (req, res) => {
@@ -50,20 +57,23 @@ router.get('/addnewcategory', (req, res) => {
 })
 
 router.post('/addnewbook', upload.single('image'), (req, res) => {
-    var path=req.file.path;
-    path=path.slice(7,path.length);
-   
+    var path = req.file.path;
+    path = path.slice(7, path.length);
+
     var entity = {
         title: req.body.title,
         author: req.body.author,
         isbn: req.body.isbn,
         image: path,
-        category: req.body.type,
+        category: req.body.category,
         description: req.body.description,
         status: true
     }
+    console.log('entity: ' + entity);
+
     bookModel.add(entity)
         .then(rows => {
+            console.log('rows: ' + rows)
             res.redirect('/admin/listbook');
         })
         .catch(err => {
@@ -78,13 +88,29 @@ router.post('/addnewcategory', (req, res) => {
     }
     categoryModel.add(entity)
         .then(rows => {
-            res.redirect('/admin/addnewcategory')
+            res.redirect('/admin/listcategory')
         })
         .catch(err => {
             res.json(err + '')
         })
 })
 
+router.get('/listcategory', (req, res, next) => {
+    categoryModel.listcategory()
+        .then(docs => {
+            res.render('layouts/admin/admin', {
+                layout: false,
+                title: 'List Category',
+                listcategory: true,
+                isActiveListCategory: true,
+                list: docs
+            })
+        })
+        .catch(err => {
+            res.json(err + '');
+        })
+
+})
 
 router.get('/profile', (req, res, next) => {
     res.render('layouts/admin/admin', {

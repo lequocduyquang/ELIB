@@ -54,10 +54,18 @@
                                 <p>Quản lý category</p>
                             </a>
                         </li>
+
                         <li class="nav-item {{#if isActiveList}}active{{/if}} ">
                             <a class="nav-link" href="/admin/listbook">
                                 <i class="material-icons">library_books</i>
                                 <p>Danh sách sách</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item {{#if isActiveListCategory}}active{{/if}} ">
+                            <a class="nav-link" href="/admin/listcategory">
+                                <i class="material-icons">library_books</i>
+                                <p>Danh sách thể loại</p>
                             </a>
                         </li>
                         <li class="nav-item {{#if isActiveListUser}}active{{/if}}">
@@ -163,8 +171,12 @@
                 {{> listbook}}
                 {{/if}}
 
-                 {{#if listuser}}
+                {{#if listuser}}
                 {{> listuser}}
+                {{/if}}
+
+                {{#if listcategory}}
+                {{> listcategory}}
                 {{/if}}
             </div>
 

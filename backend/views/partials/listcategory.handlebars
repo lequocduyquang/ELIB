@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header card-header-primary">
-        <h4 class="card-title ">List Book</h4>
+        <h4 class="card-title ">List Caterogy</h4>
         <p class="card-category"> Here is a subtitle for this table</p>
     </div>
     <div class="card-body">
@@ -16,19 +16,7 @@
                             ID
                         </th>
                         <th>
-                            Title
-                        </th>
-                        <th>
-                            Category
-                        </th>
-                        <th>
-                            Author
-                        </th>
-                        <th>
-                            ISBN
-                        </th>
-                        <th>
-                            Description
+                            Name
                         </th>
                         <th></th>
                     </tr>
@@ -40,24 +28,10 @@
                             {{this._id}}
                         </td>
                         <td>
-                            {{this.title}}
+                            {{this.name}}
                         </td>
                         <td>
-                            {{this.category.name}}
-                        </td>
-                        <td>
-                            {{this.author}}
-                        </td>
-                        <td>
-                            {{this.isbn}}
-                        </td>
-                        <td>
-                            {{this.description}}
-                        </td>
-                        <td>
-                            <a class="icon" href="/admin/{{this._id}}"><i class="fa fa-pencil fa-lg"
-                                    aria-hidden="true"></i></a>
-                            <a class="icon" href="/admin/delete/{{this._id}}"
+                            <a class="icon" href="/admin/listuser/delete/{{this._id}}"
                                 onclick="return confirm('Are you sure to delete this record ?');"><i
                                     class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
                         </td>
