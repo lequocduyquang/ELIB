@@ -5,26 +5,31 @@ const bcrypt = require('bcryptjs')
 const passport = require('passport')
 const router = express.Router()
 
-router.get('/', (req, res) => {
-    // Book.find({}, (err, allbooks) => {
-    //     if(err) {
-    //         console.log(err)
-    //     } else {
-    //         res.render('home', {
-    //             books: allbooks
-    //         })    
-    //     }
-    // })
-    Book.listbook()
-    .then(allbooks=>{
-    
-        res.render('home', {
-            books: allbooks
-        })    
-    })
-    .catch(err=>{
-        console.log(err);
-    })
+router.get('/', async (req, res) => {
+
+    try {
+        const allBooks = await Book.listbook()
+        const sortBooks = await Book.sortbook()
+        return res.render('home', {
+            books: allBooks,
+            sortbooks: sortBooks
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
+router.get('/borrowbook/:id', async (req, res) => {
+    try {
+        const foundBook = await Book.singlebyID(req.params.id)
+        console.log(foundBook)
+        return res.render('borrow', {
+            foundBook: foundBook
+        })
+    } catch (error) {
+        console.log(err)
+    }
 })
 
 router.get('/about', (req, res) => {

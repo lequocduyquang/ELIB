@@ -54,18 +54,18 @@
 <section class="recomended-sec">
     <div class="container">
         <div class="title">
-            <h2>highly recommendes books</h2>
+            <h2>Sách mới nhất</h2>
             <hr>
         </div>
         <div class="row">
-            {{#each books}}
+            {{#each sortbooks}}
             <div class="col-lg-3 col-md-6">
                 <div class="item">
                     <img src="{{image}}" alt="img">
                     <h3>{{title}}</h3>
                     <h6><span class="price">$49</span> / <a href="#">Buy Now</a></h6>
                     <div class="hover">
-                        <a href="product-single.html">
+                        <a href="/borrowbook/{{id}}">
                             <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
                         </a>
                     </div>
@@ -96,7 +96,7 @@
 <section class="recent-book-sec">
     <div class="container">
         <div class="title">
-            <h2>highly recommendes books</h2>
+            <h2>Tất cả sách</h2>
             <hr>
         </div>
         <div class="row">

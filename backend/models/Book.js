@@ -11,16 +11,20 @@ const BookSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Category'
     },
-    status: { type: Boolean }
+    status: { type: Boolean },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 mongoose.model('Book', BookSchema);
-var book = mongoose.model('Book', BookSchema);
+var books = mongoose.model('Book', BookSchema);
 
 module.exports = {
     add: entity => {
         return new Promise((resolve, reject) => {
-            var obj = new book({
+            var obj = new books({
                 title: entity.title,
                 author: entity.author,
                 isbn: entity.isbn,
@@ -38,26 +42,27 @@ module.exports = {
 
     listbook: () => {
         return new Promise((resolve, reject) => {
-            // var book = mongoose.model('Book');
+            var book = mongoose.model('Book');
+            book.find({}).populate('category').exec((err, res) => {
+                if (err) reject(err)
+                else resolve(res);
+            })
+        })
+    },
+
+    sortbook: () => {
+        return new Promise((resolve, reject) => {
+            var book = mongoose.model('Book');
             book
                 .find({})
-                // .populate('category')
-                .then((err, res) => {
-                    console.log('List books: ', res)
+                .sort({
+                    createdAt: -1
+                })
+                .exec((err, res) => {
                     if (err) reject(err)
-                    else resolve(res)
+                    else resolve(res);
                 })
         })
-        // book.find({})
-        //     .then((err, books) => {
-        //         if(err) console.log(err)
-                
-        //     })
-        // book.find({})
-        //     .then((err, books) => {
-        //         if(err) console.log(err)
-        //         return books
-        //     })
     },
 
     singlebyID: ID => {

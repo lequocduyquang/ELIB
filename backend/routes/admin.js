@@ -44,7 +44,7 @@ router.get('/addnewcategory', (req, res) => {
         viewTitle: 'Add new category',
         layout: false,
         addnewcategory: true,
-        isActiveAdd: true,
+        isActiveCategory: true,
         action: '/admin/addnewcategory'
     })
 })
@@ -115,20 +115,20 @@ router.get('/listuser', (req, res) => {
 })
 
 router.get('/listbook', (req, res, next) => {
-    bookModel.find((err, docs) => {
-        if (err)
-            res.json(err + '');
-        else {
+    bookModel.listbook()
+        .then(docs => {
             res.render('layouts/admin/admin',
                 {
                     layout: false,
-                    listuser: true,
+                    listbook: true,
                     title: 'List Book',
                     isActiveList: true,
                     list: docs
                 })
-        }
-    })
+        })
+        .catch(err => {
+            res.json(err)
+        })
 })
 
 router.get('/:id', (req, res, next) => {
