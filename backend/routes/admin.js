@@ -44,7 +44,7 @@ router.get('/addnewcategory', (req, res) => {
         viewTitle: 'Add new category',
         layout: false,
         addnewcategory: true,
-        isActiveAdd: true,
+        isActiveCategory: true,
         action: '/admin/addnewcategory'
     })
 })

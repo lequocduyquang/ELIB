@@ -15,12 +15,12 @@ const BookSchema = new Schema({
 })
 
 mongoose.model('Book', BookSchema);
-var book = mongoose.model('Book', BookSchema);
+var books = mongoose.model('Book', BookSchema);
 
 module.exports = {
     add: entity => {
         return new Promise((resolve, reject) => {
-            var obj = new book({
+            var obj = new books({
                 title: entity.title,
                 author: entity.author,
                 isbn: entity.isbn,
@@ -39,13 +39,10 @@ module.exports = {
     listbook: () => {
         return new Promise((resolve, reject) => {
             var book = mongoose.model('Book');
-            book
-                .find({})
-                .populate('category')
-                .then((err, res) => {
-                    if (err) reject(err)
-                    else resolve(res)
-                })
+            book.find((err, res) => {
+                if (err) reject(err)
+                else resolve(res);
+            })
         })
     },
 
