@@ -7,6 +7,7 @@ var userModel = require('../models/User');
 var categoryModel = require('../models/Category');
 var multer = require('multer');
 var id_temp = null;
+var id_temp_category=null;
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -40,7 +41,7 @@ router.get('/addnewbook', (req, res) => {
                 layout: false,
                 addnewbook: true,
                 isActiveAdd: true,
-                listcategory: Listcategory,
+                _listcategory: Listcategory,
                 action: '/admin/addnewbook',
             })
         })
@@ -110,6 +111,48 @@ router.get('/listcategory', (req, res, next) => {
             res.json(err + '');
         })
 
+})
+
+router.get('/listcategory/:id', (req, res, next) => {
+    id_temp_category=req.params.id
+    categoryModel.singlebyID(id_temp_category)
+        .then(docs => {
+            res.render('layouts/admin/admin', {
+                viewTitle: 'Edit category',
+                layout: false,
+                addnewcategory: true,
+                isActiveCategory: true,
+                list: docs,
+                action: '/admin/editcategory'
+            })
+        })
+        .catch(err => {
+            res.json(err + '');
+        })
+})
+
+router.get('/listcategory/delete/:id', (req, res, next) => {
+    categoryModel.deletecategory(req.params.id)
+    .then(rows=>{
+        res.redirect('/admin/listcategory');
+    })
+    .catch(err=>{
+        res.json(err+'');
+    })
+})
+
+router.post('/editcategory', (req, res) => {
+    var entity={
+        name:req.body.name
+    }
+
+    categoryModel.editcategory(entity,id_temp_category)
+    .then(rows=>{
+        res.redirect('/admin/listcategory');
+    })
+    .catch(err=>{
+        res.json(err+'');
+    })
 })
 
 router.get('/profile', (req, res, next) => {

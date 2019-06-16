@@ -33,15 +33,15 @@
         <form action="{{action}}" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="Title">Title</label>
-                <input type="text" class="form-control" name="title" id="Title" value="{{list.title}}">
+                <input required type="text" class="form-control" name="title" id="Title" value="{{list.title}}">
                 <label for="Author">Author</label>
-                <input type="text" class="form-control" name="author" id="Author" value="{{list.author}}">
+                <input required type="text" class="form-control" name="author" id="Author" value="{{list.author}}">
                 <label for="ISBN">ISBN</label>
-                <input name="isbn" type="number" class="form-control" id="ISBN" placeholder="0-306-40615-2"
+                <input required name="isbn" type="number" class="form-control" id="ISBN" placeholder="0306406152"
                     value="{{list.isbn}}">
                 <label for="category">Type or Genre</label>
-                <select class="form-control" id="category" name="category">
-                    {{#each listcategory}}
+                <select required class="form-control" id="category" name="category">
+                    {{#each _listcategory}}
                         <option value="{{id}}">{{name}}</option>
                     {{/each}}   
                 </select>
