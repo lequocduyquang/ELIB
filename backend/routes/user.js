@@ -20,15 +20,26 @@ router.get('/', async (req, res) => {
 
 })
 
-router.get('/borrowbook/:id', async (req, res) => {
+router.get('/singlebook/:id', async (req, res) => {
     try {
         const foundBook = await Book.singlebyID(req.params.id)
         console.log(foundBook)
-        return res.render('borrow', {
+        return res.render('book', {
             foundBook: foundBook
         })
     } catch (error) {
         console.log(err)
+    }
+})
+
+router.get('/borrowbook/:id', async (req, res) => {
+    try {
+        const foundBook = await Book.singlebyID(req.params.id)
+        res.render('borrow', {
+            foundBook: foundBook
+        })
+    } catch (error) {
+        console.log(error)
     }
 })
 

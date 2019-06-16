@@ -1,0 +1,41 @@
+<div class="breadcrumb">
+    <div class="container">
+        <a class="breadcrumb-item" href="index.html">Home</a>
+        <span class="breadcrumb-item active">Terms and Condition</span>
+    </div>
+</div>
+<section class="product-sec">
+    <div class="container">
+        <h1>{{foundBook.title}}</h1>
+        <div class="row">
+            <div class="col-md-6 slider-sec">
+                <img src="{{foundBook.image}}" class="img-fluid">
+                <!-- main slider carousel -->
+                <div id="myCarousel" class="carousel slide">
+                    <!-- main slider carousel items -->
+                    <div class="carousel-inner">
+                        <div class="active item carousel-item" data-slide-number="0">
+                            <img src="{{foundBook.image}}" class="img-fluid">
+                        </div>
+                    </div>
+                    <!-- main slider carousel nav controls -->
+                </div>
+                <!--/main slider carousel-->
+            </div>
+            <div class="col-md-6 slider-content">
+                <p>{{foundBook.author}}</p>
+                <p>{{foundBook.isbn}}</p>
+                <ul>
+                    <li>
+                        <span class="name">Digital List Price</span><span class="clm">:</span>
+                        <span class="price">$4.71</span>
+                    </li>
+                    </li>
+                </ul>
+                <div class="btn-sec">
+                    <a href="/borrowbook/{{foundBook.id}}" class="btn">Mượn sách</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
