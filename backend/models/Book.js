@@ -29,6 +29,8 @@ module.exports = {
                 description: entity.description,
                 status: entity.status
             })
+            console.log('addnewbook: '+obj);
+            
             obj.save((err, res) => {
                 if (err) reject(err)
                 else resolve(res)
@@ -39,12 +41,19 @@ module.exports = {
     listbook: () => {
         return new Promise((resolve, reject) => {
             var book = mongoose.model('Book');
-            book.find((err, res) => {
+            // book.find((err, res) => {
+            //     if (err) reject(err)
+            //     else resolve(res);
+            // })
+
+            book.find({}).populate('category').exec((err, res) => {
                 if (err) reject(err)
                 else resolve(res);
             })
         })
     },
+
+
 
     singlebyID: ID => {
         return new Promise((resolve, reject) => {
@@ -76,3 +85,5 @@ module.exports = {
         })
     }
 }
+
+
