@@ -45,14 +45,11 @@ module.exports = {
     listbook: () => {
         return new Promise((resolve, reject) => {
             var book = mongoose.model('Book');
-<<<<<<< HEAD
             // book.find((err, res) => {
             //     if (err) reject(err)
             //     else resolve(res);
             // })
 
-=======
->>>>>>> 272e7c659009d74030aedcb979fa8b17393f03eb
             book.find({}).populate('category').exec((err, res) => {
                 if (err) reject(err)
                 else resolve(res);
@@ -60,9 +57,7 @@ module.exports = {
         })
     },
 
-<<<<<<< HEAD
 
-=======
     sortbook: () => {
         return new Promise((resolve, reject) => {
             var book = mongoose.model('Book');
@@ -77,7 +72,6 @@ module.exports = {
                 })
         })
     },
->>>>>>> 272e7c659009d74030aedcb979fa8b17393f03eb
 
     singlebyID: ID => {
         return new Promise((resolve, reject) => {
