@@ -11,7 +11,11 @@ const BookSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Category'
     },
-    status: { type: Boolean }
+    status: { type: Boolean },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 mongoose.model('Book', BookSchema);
@@ -41,11 +45,14 @@ module.exports = {
     listbook: () => {
         return new Promise((resolve, reject) => {
             var book = mongoose.model('Book');
+<<<<<<< HEAD
             // book.find((err, res) => {
             //     if (err) reject(err)
             //     else resolve(res);
             // })
 
+=======
+>>>>>>> 272e7c659009d74030aedcb979fa8b17393f03eb
             book.find({}).populate('category').exec((err, res) => {
                 if (err) reject(err)
                 else resolve(res);
@@ -53,7 +60,24 @@ module.exports = {
         })
     },
 
+<<<<<<< HEAD
 
+=======
+    sortbook: () => {
+        return new Promise((resolve, reject) => {
+            var book = mongoose.model('Book');
+            book
+                .find({})
+                .sort({
+                    createdAt: -1
+                })
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    else resolve(res);
+                })
+        })
+    },
+>>>>>>> 272e7c659009d74030aedcb979fa8b17393f03eb
 
     singlebyID: ID => {
         return new Promise((resolve, reject) => {

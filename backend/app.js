@@ -37,7 +37,7 @@ app.use(bodyParser.json())
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-const PORT = 3000
+const PORT = 5000
 
 // Express session
 app.use(
@@ -69,4 +69,4 @@ app.use('/admin', adminRoutes);
 
 
 
-app.listen(PORT, () => console.log('App running on port 3000'))
+app.listen(PORT, () => console.log('App running on port 5000'))
