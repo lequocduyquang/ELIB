@@ -74,6 +74,13 @@
                                 <p>Danh sách người dùng</p>
                             </a>
                         </li>
+
+                        <li class="nav-item {{#if isActiveListCard}}active{{/if}}">
+                            <a class="nav-link" href="/admin/listcard">
+                                <i class="material-icons">view_list</i>
+                                <p>Danh sách chờ mượn</p>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -177,6 +184,10 @@
 
                 {{#if listcategory}}
                 {{> listcategory}}
+                {{/if}}
+
+                {{#if listcard}}
+                {{> listcard}}
                 {{/if}}
             </div>
 

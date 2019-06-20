@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header card-header-primary">
-        <h4 class="card-title ">List Book</h4>
+        <h4 class="card-title ">List Cards</h4>
         <p class="card-category"> Here is a subtitle for this table</p>
     </div>
     <div class="card-body">
@@ -13,22 +13,19 @@
                 <thead class=" text-primary">
                     <tr>
                         <th>
-                            ID
+                            Tên độc giả
                         </th>
                         <th>
-                            Tên
-                        </th>
-                        <th>
-                            Thể loại
+                            Tên sách
                         </th>
                         <th>
                             Tác giả
                         </th>
                         <th>
-                            ISBN
+                            Ngày mượn
                         </th>
                         <th>
-                            Mô tả
+                            Ngày trả
                         </th>
                         <th></th>
                     </tr>
@@ -37,29 +34,23 @@
                     {{#each list}}
                     <tr>
                         <td>
-                            {{this._id}}
+                            {{this.user.name}}
                         </td>
                         <td>
-                            {{this.title}}
+                            {{#each books}}
+                            {{this.item.title}}
+                            {{/each}}
                         </td>
                         <td>
-                            {{this.category.name}}
+                            {{this.books.author}}
                         </td>
                         <td>
-                            {{this.author}}
+                            {{this.startDate}}
                         </td>
                         <td>
-                            {{this.isbn}}
-                        </td>
-                        <td>
-                            {{this.description}}
-                        </td>
-                        <td>
-                            <a class="icon" href="/admin/list/{{this._id}}"><i class="fa fa-pencil fa-lg"
-                                    aria-hidden="true"></i></a>
-                            <a class="icon" href="/admin/delete/{{this._id}}"
-                                onclick="return confirm('Are you sure to delete this record ?');"><i
-                                    class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                            <a class="icon" href=""><i class="fas fa-check"></i></a>
+                            <a class="icon" href="/" onclick="return confirm('Bạn có chắc không đồng ý?');"><i
+                                    class="fas fa-times-circle"></i></a>
                         </td>
                     </tr>
                     {{/each}}

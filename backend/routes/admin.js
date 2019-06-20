@@ -3,11 +3,11 @@ var router = express.Router();
 const mongoose = require('mongoose');
 var bookModel = require('../models/Book');
 var userModel = require('../models/User');
-
+var cardModel = require('../models/Card');
 var categoryModel = require('../models/Category');
 var multer = require('multer');
 var id_temp = null;
-var id_temp_category=null;
+var id_temp_category = null;
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -114,7 +114,7 @@ router.get('/listcategory', (req, res, next) => {
 })
 
 router.get('/listcategory/:id', (req, res, next) => {
-    id_temp_category=req.params.id
+    id_temp_category = req.params.id
     categoryModel.singlebyID(id_temp_category)
         .then(docs => {
             res.render('layouts/admin/admin', {
@@ -133,26 +133,26 @@ router.get('/listcategory/:id', (req, res, next) => {
 
 router.get('/listcategory/delete/:id', (req, res, next) => {
     categoryModel.deletecategory(req.params.id)
-    .then(rows=>{
-        res.redirect('/admin/listcategory');
-    })
-    .catch(err=>{
-        res.json(err+'');
-    })
+        .then(rows => {
+            res.redirect('/admin/listcategory');
+        })
+        .catch(err => {
+            res.json(err + '');
+        })
 })
 
 router.post('/editcategory', (req, res) => {
-    var entity={
-        name:req.body.name
+    var entity = {
+        name: req.body.name
     }
 
-    categoryModel.editcategory(entity,id_temp_category)
-    .then(rows=>{
-        res.redirect('/admin/listcategory');
-    })
-    .catch(err=>{
-        res.json(err+'');
-    })
+    categoryModel.editcategory(entity, id_temp_category)
+        .then(rows => {
+            res.redirect('/admin/listcategory');
+        })
+        .catch(err => {
+            res.json(err + '');
+        })
 })
 
 router.get('/profile', (req, res, next) => {
@@ -256,5 +256,18 @@ router.get('/listuser/delete/:id', (req, res, next) => {
     })
 })
 
+router.get('/listcard', (req, res) => {
+    cardModel.DisplayListCard()
+        .then(docs => {
+            res.render('layouts/admin/admin', {
+                layout: false,
+                listcard: true,
+                isActiveListCard: true,
+                list: docs,
+            })
+            console.log(docs[0].books[0].item.title)
+        })
+        .catch(err => res.json(err));
+})
 
 module.exports = router;

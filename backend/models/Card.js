@@ -8,20 +8,34 @@ const CardSchema = new Schema({
     },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
-    books: [
-        {
-            type: Schema.Types.ObjectId,
-            required: true
-        }
-    ],
+    // books: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         required: true,
+    //         ref: 'Book'
+    //     }
+    // ],
+    books:Array,
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    period: {
-        type: Schema.Types.ObjectId,
-        ref: 'TimeAllow'
-    }
+    // period: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'TimeAllow'
+    // }
 })
 
-module.exports = mongoose.model('Card', CardSchema)
+mongoose.model('Card', CardSchema);
+
+module.exports = {
+    DisplayListCard: () => {
+        return new Promise((resolve, reject) => {
+            var card = mongoose.model('Card');
+            card.find({}).exec((err, res) => {
+                if (err) reject(err)
+                else resolve(res);
+            })
+        })
+    }
+}
