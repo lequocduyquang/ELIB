@@ -20,7 +20,7 @@ require('./middleware/userPassport')(passport);
 app.use(cors())
 app.use(morgan('dev'))
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost/bookstore', {
+mongoose.connect('mongodb+srv://admin:admin123@elib-jpw9y.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true
 }).then(() => console.log('Connected MongoDB'))
     .catch(err => console.log(err))

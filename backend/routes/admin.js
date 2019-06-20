@@ -200,7 +200,7 @@ router.get('/listbook', (req, res, next) => {
         })
 })
 
-router.get('/:id', (req, res, next) => {
+router.get('/list/:id', (req, res, next) => {
     id_temp = req.params.id;
     bookModel.singlebyID(id_temp)
         .then(docs => {
