@@ -9,6 +9,7 @@ var hbs_sections = require('express-handlebars-sections')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
+const MongoStore = require('connect-mongo')(session)
 
 const userRoutes = require('./routes/user')
 const adminRoutes = require('./routes/admin');
@@ -20,7 +21,7 @@ require('./middleware/userPassport')(passport);
 app.use(cors())
 app.use(morgan('dev'))
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost/bookstore', {
+mongoose.connect('mongodb+srv://admin:admin123@elib-jpw9y.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true
 }).then(() => console.log('Connected MongoDB'))
     .catch(err => console.log(err))
@@ -44,7 +45,9 @@ app.use(
     session({
         secret: 'secret',
         resave: true,
-        saveUninitialized: true
+        saveUninitialized: true,
+        store: new MongoStore({ mongooseConnection: mongoose.connection }),
+        cookie: { maxAge: 180 * 60 * 1000 }
     })
 );
 
@@ -60,6 +63,12 @@ app.use(function (req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
+    next();
+});
+
+app.use(function(req, res, next) {
+    res.locals.login = req.isAuthenticated();
+    res.locals.session = req.session;
     next();
 });
 
