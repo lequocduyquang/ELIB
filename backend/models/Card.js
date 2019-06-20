@@ -2,12 +2,13 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const CardSchema = new Schema({
-    createdAt: {
-        type: Date,
-        default: Date.now
+    // createdAt: {
+    //     type: Date,
+    //     default: Date.now
+    // },
+    startDate: { type: Date, 
+        default: Date.now 
     },
-    startDate: { type: Date, required: true },
-    endDate: { type: Date, required: true },
     // books: [
     //     {
     //         type: Schema.Types.ObjectId,
@@ -15,7 +16,16 @@ const CardSchema = new Schema({
     //         ref: 'Book'
     //     }
     // ],
-    books:Array,
+    endDate: { type: Date, 
+        // required: true 
+    },
+    // books: [
+    //     // {
+    //     //     type: Schema.Types.ObjectId,
+    //     //     required: true
+    //     // }
+    // ],
+    books: Array,
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'

@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("./../models/User");
 const Book = require("../models/Book");
 const Cart = require("../models/Cart");
+const Card = require("../models/Card");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const router = express.Router();
@@ -34,12 +35,12 @@ router.get("/singlebook/:id", async (req, res) => {
 router.get("/borrowbook/:id", async (req, res) => {
   try {
     const bookId = req.params.id;
-    const cart = new Cart(req.session.cart ? req.session.cart : {});
+    var cart = new Cart(req.session.cart ? req.session.cart : {});
 
     const foundBook = await Book.singlebyID(bookId);
-    await cart.add(foundBook, foundBook.id);
+    cart.add(foundBook, foundBook.id);
     req.session.cart = cart;
-    console.log(req.session.cart);
+    console.log("Add to cart: ", req.session.cart);
     res.redirect("/");
   } catch (error) {
     console.log(error);
@@ -50,10 +51,10 @@ router.get("/borrow", function(req, res, next) {
   if (!req.session.cart) {
     return res.render("borrow", { books: null });
   }
+  console.log('Borrow: ', req.session.cart)
   var cart = new Cart(req.session.cart);
   res.render("borrow", {
     books: cart.generateArray()
-    // totalPrice: cart.totalPrice
   });
 });
 
@@ -73,6 +74,34 @@ router.get('/remove/:id', function(req, res, next) {
     cart.removeItem(bookId);
     req.session.cart = cart;
     res.redirect('/borrow');
+});
+
+router.get('/checkout', function(req, res, next) {
+    if (!req.session.cart) {
+        return res.redirect('/borrow');
+    }
+    var cart = new Cart(req.session.cart);
+    res.render('checkout', {
+        cart
+    });
+});
+
+router.post('/checkout', function(req, res, next) {
+    if (!req.session.cart) {
+        return res.redirect('/borrow');
+    }
+    var cart = new Cart(req.session.cart);
+    var card = new Card({
+        name: 'Test abc',
+        books: cart .generateArray()
+    })
+    // console.log(card)
+    card.save((err, result) => {
+        if(err) console.log(err)
+        console.log(result)
+        req.session.cart = null
+        res.redirect('/')
+    })
 });
 
 router.get("/about", (req, res) => {
