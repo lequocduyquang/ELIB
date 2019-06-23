@@ -2,42 +2,18 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const CardSchema = new Schema({
-    // createdAt: {
-    //     type: Date,
-    //     default: Date.now
-    // },
     startDate: { type: Date, 
         default: Date.now 
     },
-    // books: [
-    //     {
-    //         type: Schema.Types.ObjectId,
-    //         required: true,
-    //         ref: 'Book'
-    //     }
-    // ],
-    endDate: { type: Date, 
-        // required: true 
-    },
-    // books: [
-    //     // {
-    //     //     type: Schema.Types.ObjectId,
-    //     //     required: true
-    //     // }
-    // ],
+    endDate: { type: Date },
     books: Array,
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    },
-    // period: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'TimeAllow'
-    // }
+    }
 })
 
-mongoose.model('Card', CardSchema);
-
+module.exports = mongoose.model('Card', CardSchema);
 module.exports = {
     DisplayListCard: () => {
         return new Promise((resolve, reject) => {
