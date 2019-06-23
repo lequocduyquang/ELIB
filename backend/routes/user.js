@@ -78,29 +78,31 @@ router.get("/remove/:id", function(req, res, next) {
   res.redirect("/borrow");
 });
 
-router.get("/checkout", function(req, res, next) {
+router.get("/checkout", isLoggedIn, function(req, res, next) {
   if (!req.session.cart) {
     return res.redirect("/borrow");
   }
-  var cart = new Cart(req.session.cart);
+  let cart = new Cart(req.session.cart);
   res.render("checkout", {
     cart
   });
 });
 
-router.post("/checkout", function(req, res, next) {
+router.post("/checkout", isLoggedIn, function(req, res, next) {
   if (!req.session.cart) {
     return res.redirect("/borrow");
   }
-  var cart = new Cart(req.session.cart);
-  var card = new Card({
+  let cart = new Cart(req.session.cart);
+  let card = new Card({
     name: "Test abc",
+    user: req.user,
+    startDay: req.body.startDay,
+    endDay: req.body.endDay,
     books: cart.generateArray()
   });
-  // console.log(card)
   card.save((err, result) => {
     if (err) console.log(err);
-    console.log(result);
+    console.log('Card: ', result);
     req.session.cart = null;
     res.redirect("/");
   });
@@ -203,3 +205,10 @@ router.post("/login", (req, res, next) => {
 });
 
 module.exports = router;
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+      return next();
+  }
+  res.redirect('/login');
+}
