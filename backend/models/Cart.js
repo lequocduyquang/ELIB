@@ -1,7 +1,18 @@
 module.exports = function Cart(oldCart) {
+
+    var endDate = new Date();
+    var numberOfDaysToAdd = 7;
+    endDate.setDate(endDate.getDate() + numberOfDaysToAdd);
+    var startDate = new Date();
+    startDate.setDate(startDate.getDate());
+
     this.items = oldCart.items || {};
     this.totalQty = oldCart.totalQty || 0;
     this.totalPrice = oldCart.totalPrice || 0;
+    this.startDay = startDate;
+    this.endDay = endDate;
+    
+    
 
     this.add = function(item, id) {
         var storedItem = this.items[id];

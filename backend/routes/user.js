@@ -5,18 +5,40 @@ const Cart = require("../models/Cart");
 const Card = require("../models/Card");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
+const escapeRegex = require("../helpers/regex-escape");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    // const allBooks = await Book.listbook();
-    // const sortBooks = await Book.sortbook();
-    const allBooks = await Book.find({});
-    const sortBooks = await Book.find({});
-    return res.render("home", {
-      books: allBooks,
-      sortbooks: sortBooks
-    });
+    let noMatch = null;
+    if(req.query.search) {
+      const regex = new RegExp(escapeRegex(req.query.search), 'gi')
+      Book.find({
+        title: regex
+      }, (err, allBooks) => {
+        if(err) {
+          console.log(err)
+        } else {
+          if(allBooks.length < 1) {
+            noMatch = 'No posts match that query'
+          }
+          res.render('search', {
+            books: allBooks,
+            noMatch: noMatch
+          })
+        }
+      })
+    } 
+    
+    else {
+
+      const allBooks = await Book.find({});
+      const sortBooks = await Book.find({});
+      return res.render("home", {
+        books: allBooks,
+        sortbooks: sortBooks
+      });
+    }
   } catch (error) {
     console.log(error);
   }
@@ -97,7 +119,7 @@ router.post('/checkout', function (req, res, next) {
   var card = new Card({
     // startDay,
     // endDay,
-    user: req.authUser,
+    user: req.user,
     books: cart.generateArray()
   })
   // console.log(card)
