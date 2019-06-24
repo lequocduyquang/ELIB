@@ -9,8 +9,10 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const allBooks = await Book.listbook();
-    const sortBooks = await Book.sortbook();
+    // const allBooks = await Book.listbook();
+    // const sortBooks = await Book.sortbook();
+    const allBooks = await Book.find({});
+    const sortBooks = await Book.find({});
     return res.render("home", {
       books: allBooks,
       sortbooks: sortBooks
@@ -22,8 +24,8 @@ router.get("/", async (req, res) => {
 
 router.get("/singlebook/:id", async (req, res) => {
   try {
-    const foundBook = await Book.singlebyID(req.params.id);
-    console.log(foundBook);
+    // const foundBook = await Book.singlebyID(req.params.id);
+    const foundBook = await Book.findById(req.params.id);
     return res.render("book", {
       foundBook: foundBook
     });
@@ -32,26 +34,26 @@ router.get("/singlebook/:id", async (req, res) => {
   }
 });
 
-router.get("/borrowbook/:id", async (req, res) => {
-  try {
-    const bookId = req.params.id;
-    var cart = new Cart(req.session.cart ? req.session.cart : {});
+router.get("/borrowbook/:id", (req, res, next) => {
+  const bookId = req.params.id;
+  let cart = new Cart(req.session.cart ? req.session.cart : {});
+  Book.findById(bookId, (err, book) => {
+    if(err) {
+      return res.redirect('/');
+    }
 
-    const foundBook = await Book.singlebyID(bookId);
-    cart.add(foundBook, foundBook.id);
+    cart.add(book, book.id);
     req.session.cart = cart;
-    console.log("Add to cart: ", req.session.cart);
-    res.redirect("/");
-  } catch (error) {
-    console.log(error);
-  }
+    console.log(req.session.cart);
+    res.redirect('/');
+  })
 });
 
 router.get("/borrow", function (req, res, next) {
   if (!req.session.cart) {
     return res.render("borrow", { books: null });
   }
-  console.log('Borrow: ', req.session.cart)
+  console.log("Borrow: ", req.session.cart);
   var cart = new Cart(req.session.cart);
   res.render("borrow", {
     books: cart.generateArray()
@@ -237,3 +239,10 @@ router.post('/logout', (req, res) => {
   }
 })
 module.exports = router;
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+      return next();
+  }
+  res.redirect('/login');
+}

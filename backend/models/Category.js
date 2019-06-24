@@ -5,9 +5,9 @@ const CategorySchema = new Schema({
     name: { type: String, required: true },
 })
 
-mongoose.model('Category', CategorySchema);
-var category = mongoose.model('Category', CategorySchema);
 
+
+module.exports =mongoose.model('Category', CategorySchema);
 module.exports = {
     add: entity => {
         return new Promise((resolve, reject) => {
