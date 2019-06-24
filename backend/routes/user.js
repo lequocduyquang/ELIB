@@ -6,6 +6,7 @@ const Card = require("../models/Card");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const router = express.Router();
+var userModel = require('../models/User');
 
 router.get("/", async (req, res) => {
   try {
@@ -38,7 +39,7 @@ router.get("/borrowbook/:id", (req, res, next) => {
   const bookId = req.params.id;
   let cart = new Cart(req.session.cart ? req.session.cart : {});
   Book.findById(bookId, (err, book) => {
-    if(err) {
+    if (err) {
       return res.redirect('/');
     }
 
@@ -129,6 +130,20 @@ router.get("/login", (req, res, next) => {
 router.get("/profile", (req, res, next) => {
   res.render("profile");
 });
+
+router.post("/profile", (req, res, next) => {
+  var entity = {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone
+  }
+  userModel.findOneAndUpdate({ email: req.body.email }, entity, { new: true }, (err, docs) => {
+    if(err) res.json(err+'')
+    else{
+      res.redirect('/profile');
+    }
+  })
+})
 
 router.get("/register", (req, res) => {
   res.render("register");
@@ -242,7 +257,7 @@ module.exports = router;
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
-      return next();
+    return next();
   }
   res.redirect('/login');
 }

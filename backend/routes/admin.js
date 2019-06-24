@@ -21,12 +21,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 router.get('/', (req, res) => {
-    res.render('layouts/admin/admin', {
-        layout: false,
-        profile: true,
-        title: 'User Profile',
-        isActiveProfile: true
-    })
+    res.redirect('/admin/profile');
 });
 
 router.get('/addnewbook', (req, res) => {
@@ -158,6 +153,20 @@ router.get('/profile', (req, res, next) => {
         profile: true,
         title: 'User Profile',
         isActiveProfile: true
+    })
+})
+
+router.post('/profile', (req, res, next) => {
+    var entity = {
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.sdt
+    }
+    userModel.findOneAndUpdate({ email: req.body.email }, entity, { new: true }, (err, docs) => {
+        if(err) res.json(err+'')
+        else{
+            res.redirect('/admin/profile');
+        }
     })
 })
 
