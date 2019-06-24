@@ -31,20 +31,25 @@ router.get('/', (req, res) => {
 
 router.get('/addnewbook', (req, res) => {
     var Listcategory;
-    categoryModel.listcategory()
-        .then(rows => {
+    categoryModel.find({}, (err, rows) => {
+        if (err) res.json(res + '')
+        else {
             Listcategory = rows;
-            bookModel
-                .listbook()
-            res.render('layouts/admin/admin', {
-                viewTitle: 'Add new book',
-                layout: false,
-                addnewbook: true,
-                isActiveAdd: true,
-                _listcategory: Listcategory,
-                action: '/admin/addnewbook',
+            bookModel.find({}).populate('category').exec((err, docs) => {
+                if (err) res.json()
+                else {
+                    res.render('layouts/admin/admin', {
+                        viewTitle: 'Add new book',
+                        layout: false,
+                        addnewbook: true,
+                        isActiveAdd: true,
+                        _listcategory: Listcategory,
+                        action: '/admin/addnewbook',
+                    })
+                }
             })
-        })
+        }
+    })
 });
 
 router.get('/addnewcategory', (req, res) => {
@@ -61,7 +66,7 @@ router.post('/addnewbook', upload.single('image'), (req, res) => {
     var path = req.file.path;
     path = path.slice(7, path.length);
 
-    var entity = {
+    var obj = new bookModel({
         title: req.body.title,
         author: req.body.author,
         isbn: req.body.isbn,
@@ -69,36 +74,32 @@ router.post('/addnewbook', upload.single('image'), (req, res) => {
         category: req.body.category,
         description: req.body.description,
         status: true
-    }
-    console.log('entity: ' + entity);
+    })
 
-    bookModel.add(entity)
-        .then(rows => {
-            console.log('rows: ' + rows)
+    obj.save((err, docs) => {
+        if (err) res.json(err + '')
+        else {
             res.redirect('/admin/listbook');
-        })
-        .catch(err => {
-            res.json(err + '');
-        })
-
+        }
+    })
 });
 
 router.post('/addnewcategory', (req, res) => {
-    var entity = {
+    var obj = new categoryModel({
         name: req.body.name
-    }
-    categoryModel.add(entity)
-        .then(rows => {
+    })
+    obj.save((err, docs) => {
+        if (err) res.json(err + '')
+        else {
             res.redirect('/admin/listcategory')
-        })
-        .catch(err => {
-            res.json(err + '')
-        })
+        }
+    })
 })
 
 router.get('/listcategory', (req, res, next) => {
-    categoryModel.listcategory()
-        .then(docs => {
+    categoryModel.find({}, (err, docs) => {
+        if (err) res.json(res + '');
+        else {
             res.render('layouts/admin/admin', {
                 layout: false,
                 title: 'List Category',
@@ -106,17 +107,17 @@ router.get('/listcategory', (req, res, next) => {
                 isActiveListCategory: true,
                 list: docs
             })
-        })
-        .catch(err => {
-            res.json(err + '');
-        })
+        }
+    })
 
 })
 
 router.get('/listcategory/:id', (req, res, next) => {
     id_temp_category = req.params.id
-    categoryModel.singlebyID(id_temp_category)
-        .then(docs => {
+
+    categoryModel.findById(id_temp_category, (err, docs) => {
+        if (err) res.json(err + '')
+        else {
             res.render('layouts/admin/admin', {
                 viewTitle: 'Edit category',
                 layout: false,
@@ -125,20 +126,17 @@ router.get('/listcategory/:id', (req, res, next) => {
                 list: docs,
                 action: '/admin/editcategory'
             })
-        })
-        .catch(err => {
-            res.json(err + '');
-        })
+        }
+    })
 })
 
 router.get('/listcategory/delete/:id', (req, res, next) => {
-    categoryModel.deletecategory(req.params.id)
-        .then(rows => {
+    categoryModel.findByIdAndRemove(req.params.id, (err, docs) => {
+        if (err) res(err + '')
+        else {
             res.redirect('/admin/listcategory');
-        })
-        .catch(err => {
-            res.json(err + '');
-        })
+        }
+    })
 })
 
 router.post('/editcategory', (req, res) => {
@@ -146,13 +144,12 @@ router.post('/editcategory', (req, res) => {
         name: req.body.name
     }
 
-    categoryModel.editcategory(entity, id_temp_category)
-        .then(rows => {
+    categoryModel.findOneAndUpdate({ _id: id_temp_category }, entity, { new: true }, (err, docs) => {
+        if (err) res.json(err + '')
+        else {
             res.redirect('/admin/listcategory');
-        })
-        .catch(err => {
-            res.json(err + '');
-        })
+        }
+    })
 })
 
 router.get('/profile', (req, res, next) => {
@@ -165,7 +162,7 @@ router.get('/profile', (req, res, next) => {
 })
 
 router.get('/listuser', (req, res) => {
-    userModel.find((err, docs) => {
+    userModel.find({ permission: 0 }, (err, docs) => { // ds độc giả
         if (err)
             res.json(err + '');
         else {
@@ -184,8 +181,9 @@ router.get('/listuser', (req, res) => {
 })
 
 router.get('/listbook', (req, res, next) => {
-    bookModel.listbook()
-        .then(docs => {
+    bookModel.find({}).populate('category').exec((err, docs) => {
+        if (err) res.json(err + '')
+        else {
             res.render('layouts/admin/admin',
                 {
                     layout: false,
@@ -194,16 +192,16 @@ router.get('/listbook', (req, res, next) => {
                     isActiveList: true,
                     list: docs
                 })
-        })
-        .catch(err => {
-            res.json(err)
-        })
+        }
+    })
 })
 
 router.get('/list/:id', (req, res, next) => {
     id_temp = req.params.id;
-    bookModel.singlebyID(id_temp)
-        .then(docs => {
+
+    bookModel.findById(id_temp, (err, docs) => {
+        if (err) res.json(err + '')
+        else {
             res.render('layouts/admin/admin', {
                 viewTitle: 'Edit book',
                 layout: false,
@@ -212,10 +210,8 @@ router.get('/list/:id', (req, res, next) => {
                 list: docs,
                 action: '/admin/editbook'
             })
-        })
-        .catch(err => {
-            res.json(err + '');
-        })
+        }
+    })
 })
 
 router.post('/editbook', (req, res, next) => {
@@ -228,23 +224,22 @@ router.post('/editbook', (req, res, next) => {
         description: req.body.description,
         status: true
     }
-    bookModel.editbook(entity, id_temp)
-        .then(docs => {
+
+    bookModel.findOneAndUpdate({ _id: id_temp }, entity, { new: true }, (err, docs) => {
+        if (err) res.json(err + '')
+        else {
             res.redirect('/admin/listbook');
-        })
-        .catch(err => {
-            res.json(err + '');
-        })
+        }
+    })
 })
 
 router.get('/delete/:id', (req, res, next) => {
-    bookModel.deletebook(req.params.id)
-        .then(docs => {
+    bookModel.findByIdAndRemove(req.params.id, (err, docs) => {
+        if (err) res.json(err + '')
+        else {
             res.redirect('/admin/listbook');
-        })
-        .catch(err => {
-            res.json(err + '');
-        })
+        }
+    })
 })
 
 router.get('/listuser/delete/:id', (req, res, next) => {
@@ -257,17 +252,17 @@ router.get('/listuser/delete/:id', (req, res, next) => {
 })
 
 router.get('/listcard', (req, res) => {
-    cardModel.DisplayListCard()
-        .then(docs => {
+    cardModel.find({}, (err, docs) => {
+        if (err) res.json(err + '')
+        else {
             res.render('layouts/admin/admin', {
                 layout: false,
                 listcard: true,
                 isActiveListCard: true,
                 list: docs,
             })
-            console.log(docs[0].books[0].item.title)
-        })
-        .catch(err => res.json(err));
+        }
+    })
 })
 
 module.exports = router;
