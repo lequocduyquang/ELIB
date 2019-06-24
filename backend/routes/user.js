@@ -79,11 +79,12 @@ router.get('/remove/:id', function (req, res, next) {
   res.redirect('/borrow');
 });
 
-router.get('/checkout', function (req, res, next) {
+router.get('/checkout', isLoggedIn, function (req, res, next) {
   if (!req.session.cart) {
     return res.redirect('/borrow');
   }
   var cart = new Cart(req.session.cart);
+  console.log(cart.items)
   res.render('checkout', {
     cart
   });
@@ -95,7 +96,9 @@ router.post('/checkout', function (req, res, next) {
   }
   var cart = new Cart(req.session.cart);
   var card = new Card({
-    name: 'Test abc',
+    // startDay,
+    // endDay,
+    user: req.authUser,
     books: cart.generateArray()
   })
   // console.log(card)

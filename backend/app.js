@@ -10,6 +10,9 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
 const MongoStore = require('connect-mongo')(session)
+const {
+    generateTime
+} = require('./helpers/handlebars-helpers')
 
 const userRoutes = require('./routes/user')
 const adminRoutes = require('./routes/admin');
@@ -35,7 +38,8 @@ app.engine('handlebars', exphbs({
         section: hbs_sections(),
         format: name => {
             return name.split(' ').slice(-1).join(' ');
-        }
+        },
+        generateTime: generateTime
     }
 }))
 app.set('view engine', 'handlebars')
