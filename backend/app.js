@@ -14,9 +14,12 @@ const MongoStore = require('connect-mongo')(session)
 const userRoutes = require('./routes/user')
 const adminRoutes = require('./routes/admin');
 const app = express()
+var auth = require('./middleware/auth');
+
 
 // Passport Config
 require('./middleware/userPassport')(passport);
+
 
 app.use(cors())
 app.use(morgan('dev'))
@@ -26,9 +29,13 @@ mongoose.connect('mongodb+srv://admin:admin123@elib-jpw9y.mongodb.net/test?retry
 }).then(() => console.log('Connected MongoDB'))
     .catch(err => console.log(err))
 
+
 app.engine('handlebars', exphbs({
     helpers: {
-        section: hbs_sections()
+        section: hbs_sections(),
+        format: name => {
+            return name.split(' ').slice(-1).join(' ');
+        }
     }
 }))
 app.set('view engine', 'handlebars')
@@ -66,15 +73,17 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.login = req.isAuthenticated();
     res.locals.session = req.session;
     next();
 });
 
+app.use(require('./middleware/auth-locals.mdw'))
+
 app.use('/', userRoutes)
 
-app.use('/admin', adminRoutes);
+app.use('/admin', auth, adminRoutes);
 
 
 
