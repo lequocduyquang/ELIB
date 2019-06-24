@@ -49,7 +49,7 @@ router.get("/borrowbook/:id", (req, res, next) => {
   })
 });
 
-router.get("/borrow", function(req, res, next) {
+router.get("/borrow", function (req, res, next) {
   if (!req.session.cart) {
     return res.render("borrow", { books: null });
   }
@@ -60,52 +60,53 @@ router.get("/borrow", function(req, res, next) {
   });
 });
 
-router.get("/reduce/:id", function(req, res, next) {
+router.get('/reduce/:id', function (req, res, next) {
   const bookId = req.params.id;
   const cart = new Cart(req.session.cart ? req.session.cart : {});
 
   cart.reduceByOne(bookId);
   req.session.cart = cart;
-  res.redirect("/borrow");
+  res.redirect('/borrow');
 });
 
-router.get("/remove/:id", function(req, res, next) {
+router.get('/remove/:id', function (req, res, next) {
   const bookId = req.params.id;
   const cart = new Cart(req.session.cart ? req.session.cart : {});
 
   cart.removeItem(bookId);
   req.session.cart = cart;
-  res.redirect("/borrow");
+  res.redirect('/borrow');
 });
 
-router.get("/checkout", isLoggedIn, function(req, res, next) {
+router.get('/checkout', isLoggedIn, function (req, res, next) {
   if (!req.session.cart) {
-    return res.redirect("/borrow");
+    return res.redirect('/borrow');
   }
-  let cart = new Cart(req.session.cart);
-  res.render("checkout", {
+  var cart = new Cart(req.session.cart);
+  console.log(cart.items)
+  res.render('checkout', {
     cart
   });
 });
 
-router.post("/checkout", isLoggedIn, function(req, res, next) {
+router.post('/checkout', function (req, res, next) {
   if (!req.session.cart) {
-    return res.redirect("/borrow");
+    return res.redirect('/borrow');
   }
-  let cart = new Cart(req.session.cart);
-  let card = new Card({
-    name: "Test abc",
-    user: req.user,
-    startDay: req.body.startDay,
-    endDay: req.body.endDay,
+  var cart = new Cart(req.session.cart);
+  var card = new Card({
+    // startDay,
+    // endDay,
+    user: req.authUser,
     books: cart.generateArray()
-  });
+  })
+  // console.log(card)
   card.save((err, result) => {
-    if (err) console.log(err);
-    console.log('Card: ', result);
-    req.session.cart = null;
-    res.redirect("/");
-  });
+    if (err) console.log(err)
+    console.log(result)
+    req.session.cart = null
+    res.redirect('/')
+  })
 });
 
 router.get("/about", (req, res) => {
@@ -124,19 +125,24 @@ router.get("/terms", (req, res) => {
   res.render("terms");
 });
 
-router.get("/login", (req, res) => {
+router.get("/login", (req, res, next) => {
   res.render("login");
 });
+
+router.get("/profile", (req, res, next) => {
+  res.render("profile");
+});
+
 router.get("/register", (req, res) => {
   res.render("register");
 });
 
 // Register
 router.post("/register", (req, res) => {
-  const { name, email, password, password2 } = req.body;
+  const { name, email, phone, password, password2 } = req.body;
   let errors = [];
 
-  if (!name || !email || !password || !password2) {
+  if (!name || !email || !phone || !password || !password2) {
     errors.push({ msg: "Please enter all fields" });
   }
 
@@ -153,6 +159,7 @@ router.post("/register", (req, res) => {
       errors,
       name,
       email,
+      phone,
       password,
       password2
     });
@@ -171,7 +178,9 @@ router.post("/register", (req, res) => {
         const newUser = new User({
           name,
           email,
-          password
+          phone,
+          password,
+          permission: 0
         });
 
         bcrypt.genSalt(10, (err, salt) => {
@@ -197,13 +206,41 @@ router.post("/register", (req, res) => {
 
 // Login
 router.post("/login", (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true
+  // passport.authenticate("local", {
+  //   successRedirect: "/",
+  //   failureRedirect: "/login",
+  //   failureFlash: true
+  // })(req, res, next);
+
+  passport.authenticate('local', (err, user, info) => { // sd passport local
+    if (err)
+      return next(err);
+
+    if (!user) {
+      return res.render("login");
+    }
+
+    req.logIn(user, err => {
+      if (err)
+        return next(err);
+      else {
+        if (user.permission == 0)
+          return res.redirect('/'); // login thành công với user
+        else if (user.permission == 1)
+          return res.redirect('/admin'); // login thành công với admin
+      }
+
+    });
   })(req, res, next);
 });
 
+// logout
+router.post('/logout', (req, res) => {
+  if (req.user) {
+    req.logOut();
+    res.redirect('/login');
+  }
+})
 module.exports = router;
 
 function isLoggedIn(req, res, next) {

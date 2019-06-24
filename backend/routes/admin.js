@@ -49,20 +49,29 @@ router.get("/addnewbook", (req, res) => {
       action: "/admin/addnewbook"
     });
   });
-  // categoryModel.listcategory()
-  //     .then(rows => {
-  //         Listcategory = rows;
-  //         bookModel
-  //             .listbook()
-  //         res.render('layouts/admin/admin', {
-  //             viewTitle: 'Add new book',
-  //             layout: false,
-  //             addnewbook: true,
-  //             isActiveAdd: true,
-  //             _listcategory: Listcategory,
-  //             action: '/admin/addnewbook',
-  //         })
-  //     })
+});
+
+router.get('/addnewbook', (req, res) => {
+    var Listcategory;
+    categoryModel.find({}, (err, rows) => {
+        if (err) res.json(res + '')
+        else {
+            Listcategory = rows;
+            bookModel.find({}).populate('category').exec((err, docs) => {
+                if (err) res.json()
+                else {
+                    res.render('layouts/admin/admin', {
+                        viewTitle: 'Add new book',
+                        layout: false,
+                        addnewbook: true,
+                        isActiveAdd: true,
+                        _listcategory: Listcategory,
+                        action: '/admin/addnewbook',
+                    })
+                }
+            })
+        }
+    })
 });
 
 router.get("/addnewcategory", (req, res) => {

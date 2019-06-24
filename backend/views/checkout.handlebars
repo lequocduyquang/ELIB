@@ -1,45 +1,33 @@
 <div class="container mb-3">
     <div class="row">
-        <div class="col-xs-12 col-md-6">
-            <h1>Checkout</h1>
-            {{ books }}
+        <div class="col-xs-12 col-md-12">
+            <h2 class="text-center mb-3">Checkout</h2>
+            <p>Tổng số lượng: {{cart.totalQty}}</p>
             <form action="/checkout" method="post" id="checkout-form">
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" id="name" class="form-control" required name="name">
+                            <input type="text" id="name" class="form-control" required name="name" value="{{authUser.name}}">
                         </div>
                     </div>
                     <div class="col-xs-12 col-md-6">
                         <div class="form-group">
-                            <label for="address">Address</label>
-                            <input type="text" id="address" class="form-control" required name="address">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" required name="email" value="{{authUser.email}}">
                         </div>
                     </div>
                     <hr>
-                    <div class="col-xs-12 col-md-6">
-                        <div class="form-group">
-                            <label for="card-name">Card Holder Name</label>
-                            <input type="text" id="card-name" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-6">
-                        <div class="form-group">
-                            <label for="card-number">Card Number</label>
-                            <input type="text" id="card-number" class="form-control" required>
-                        </div>
-                    </div>
                     <div class="col-xs-6 col-md-6">
                         <div class="form-group">
                             <label for="startDay">Start Day</label>
-                            <input type="text" id="start-day" name="startDay" class="form-control" required>
+                            {{generateTime startDay "MMMM Do YYYY" }}
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-6">
                         <div class="form-group">
                             <label for="endDay">End Day</label>
-                            <input type="text" id="end-day" name="endDay" class="form-control" required>
+                            {{generateTime endDay "MMMM Do YYYY" }}
                         </div>
                     </div>
                 </div>

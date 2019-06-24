@@ -11,19 +11,15 @@
 
             <div class="form-group">
                 <label>Email:</label>
-                <input type="email" class="form-control" name="email" placeholder="Email or User Name">
+                <input readonly type="email" class="form-control" name="email" value="{{authUser.email}}">
             </div>
             <div class="form-group">
                 <label>Họ và tên:</label>
-                <input type="text" class="form-control" name="password" placeholder="Full name">
+                <input type="text" class="form-control" name="password" value="{{authUser.name}}">
             </div>
             <div class="form-group">
                 <label>Số điện thoại:</label>
-                <input type="tel" class="form-control" name="sdt" placeholder="Phone number">
-            </div>
-            <div class="form-group">
-                <label>Ngày sinh:</label>
-                <input type="text" class="form-control" name="birthDay" placeholder="Birth Day">
+                <input type="tel" class="form-control" name="sdt" value="{{authUser.phone}}">
             </div>
             <div class="form-group">
                 <div style="text-align: center;">

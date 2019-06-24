@@ -6,6 +6,7 @@ const UserSchema = new Schema({
     email: String,
     phone: String,
     password: String,
+    permission: Number, // phân quyền 0: users, 1: admin
     cards: [
         {
             type: Schema.Types.ObjectId,
